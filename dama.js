@@ -41,6 +41,13 @@ if (!document.getElementsByClassName) {
 
         return color;
     }
+
+    game.eatPart = function(id){
+        document.getElementById(id).innerHTML="";
+        game.clearActive(); 
+    }
+
+
     //distribui os quadrados
     game.makeSquare = function(r){
 
@@ -90,40 +97,20 @@ if (!document.getElementsByClassName) {
     }
     // limpa a class active
     game.clearActive = function (){
+        console.log("limpo")
         for (var i = 1; i < whiteSquare.length; i++) {
             whiteSquare[i].setAttribute("class","square white");
         };
         
     }
 
-    game.ajustMove = function(sq,row,type){
-        
-
-        if (type == 'w') {
-            Possible['mLeft'] = sq-1;
-            Possible['mRight'] = sq+1;
-            Possible['mTop'] = row-1;
-            Possible['type'] = type;
-        }
-
-        if (type == 'b') {
-            Possible['mLeft'] = sq-1;
-            Possible['mRight'] = sq+1;
-            Possible['emTop'] = row+1;
-            Possible['type'] = type;
-        }
-         console.log(Possible); 
-        return Possible;
-        
+    game.makeDama = function(){
 
     }
 
     // verifica os movimentos possiveis
     game.possibleMove = function(part,row,sq,type,oldId){
 
-        //possible = game.ajustMove(sq,row,type);
-        //
-       
         mLeft = sq-1;
         mRight = sq+1;
         
@@ -134,85 +121,119 @@ if (!document.getElementsByClassName) {
         if (type == 'b') {
             mTop = row+1;
         }
-         
-        //console.log("sq_"+mTop+"_"+mLeft);
-        if (sq > 1){
+
+        if (mRight <= 8 && mLeft > 0 ){
+            game.clearActive(); 
+            nextSquareLeft  = document.getElementById("sq_"+mTop+"_"+mLeft);
+            nextSquareRight = document.getElementById("sq_"+mTop+"_"+mRight);
+
+            existingClassLeft   = nextSquareLeft.getAttribute("class");
+            existingClassRight  = nextSquareRight.getAttribute("class"); 
+
+            partLeft    = nextSquareLeft.hasAttribute("part");
+            partRight   = nextSquareRight.hasAttribute("part");
+
+            partTypeRight   = nextSquareRight.getAttribute("type");
+            partTypeLeft    = nextSquareLeft.getAttribute("type");
+            console.log(partLeft);
+
+
+            if (partLeft === true && type != partTypeLeft) {
+                console.log("inimigo a esquerda");
+                ennime  = document.getElementById("sq_"+mTop+"_"+mLeft);
+                ennime.setAttribute("ondblclick","game.eatPart(this.id)");
+
+                if (type == 'w') {   
+                    mTop = mTop-1;
+                    mLeft = mLeft-1;
+                    mRight = mRight+1;
+                }
+
+                if (type == 'b') {
+                    mTop = mTop+1;
+                    mLeft = mLeft-1;
+                    mRight = mRight+1;
+                }
+
+                
+                nextSquareLeft  = document.getElementById("sq_"+mTop+"_"+mLeft);
+                
+                
+                nextSquareLeft.setAttribute("class",existingClassLeft+" active");
+                nextSquareLeft.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mRight+",'"+type+"')");
+
+            }else{
+                nextSquareLeft.setAttribute("class",existingClassLeft+" active");
+                nextSquareLeft.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mRight+",'"+type+"')");
+
+            }
+
+
+             if (partRight === true && type != partTypeRight) {
+                console.log("inimigo a direita");
+     
+                if (type == 'w') {   
+                    mTop = mTop-1;
+                    mLeft = mLeft-1;
+                    mRight = mRight+1;
+                }
+
+                if (type == 'b') {
+                    mTop = mTop+1;
+                    mLeft = mLeft-1;
+                    mRight = mRight+1;
+                }
+
+                nextSquareRight  = document.getElementById("sq_"+mTop+"_"+mRight);
+            
+
+                nextSquareRight.setAttribute("class",existingClassRight+" active");
+                nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mLeft+",'"+type+"')");
+            }else{
+                
+                nextSquareRight.setAttribute("class",existingClassRight+" active");
+                nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mLeft+",'"+type+"')");
+            }
+
+            
+
+            
+        }
+        
+        if (mRight == 9 ) {
             game.clearActive(); 
             nextSquareLeft = document.getElementById("sq_"+mTop+"_"+mLeft);
             existingClassLeft = nextSquareLeft.getAttribute("class");
             partLeft = nextSquareLeft.hasAttribute("part");
             nextSquareLeft.setAttribute("class",existingClassLeft+" active");
-            nextSquareLeft.setAttribute("onclick", "game.partMove(this.id,"+oldId+",'"+type+"')");
+            nextSquareLeft.setAttribute("onclick", "game.partMove(this.id,"+oldId+","+mRight+",'"+type+"')");
+
         }
-        if (sq <= 7){
-            if (sq == 1) {
-               game.clearActive(); 
-            } 
+
+        if (mLeft == 0) {
+            game.clearActive(); 
             nextSquareRight = document.getElementById("sq_"+mTop+"_"+mRight);
             existingClassRight = nextSquareRight.getAttribute("class"); 
-            partRight = nextSquareLeft.hasAttribute("part");
-            if (partRight == false) {
-                nextSquareRight.setAttribute("class",existingClassRight+" active");
-                nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+",'"+type+"')");
-            }else{
-                nextType = nextSquareRight.getAttribute('type')
-                if (nextType != type) {
-                   // mLeft = mLeft+1;
-                    //mRight = mRight+1;
-                    if (type == 'w') {   
-                        mTop = row;
-                    }
-
-                    if (type == 'b') {
-                        mTop = row;
-                    }
-
-                    nextSquareRight = document.getElementById("sq_"+mTop+"_"+mRight);
-                    nextSquareRight.setAttribute("class",existingClassRight+" active");
-                    nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+",'"+type+"')");
-                }
-            }
+            partRight = nextSquareRight.hasAttribute("part");
+            nextSquareRight.setAttribute("class",existingClassRight+" active");
+            nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+","+mLeft+",'"+type+"')");
         }
         
 
-        //if (sq > 1) {
-            //game.clearActive();
-            //select1 = document.getElementById("sq_"+mTop+"_"+mLeft);
-            //part = select1.hasAttribute("part");
-            //if (part != true){
-                //existingClass = select1.getAttribute("class");
-                //select1.setAttribute("class",existingClass+" active");
-                //select1.setAttribute("onclick", "game.partMove(this.id,"+oldId+",'"+type+"')");
-            //}else{
-             //console.log('dir'); 
-                 
-            //}
-        //}
-        //if (sq <= 7) {
-            //if (sq == 1) {
-                //game.clearActive(); 
-            //}
-            //select2 = document.getElementById("sq_"+mTop+"_"+mRight);
-            //part = select2.hasAttribute("part");
-            
-            //if (part != true) {  
-                //existingClass = select2.getAttribute("class");
-                //select2.setAttribute("class",existingClass+" active");
-                //select2.setAttribute("onclick", "game.partMove(this.id,"+oldId+",'"+type+"')");
-            //} else {
-                //console.log('esq');
-               
-            //}
-           //if(select2.getAttribute('type') == type){ 
-        //}
+
+        
 
     }
 
-    game.partMove = function(id,oldId,type){
-        
+    game.partMove = function(id,oldId,other,type){
+       
         //nova posição
         move = document.getElementById(id);
-        
+
+        //não clicado posição
+        if (typeof other === 'object') {
+            other.removeAttribute("onclick");
+        }
         //posição antiga
         old = document.getElementById(oldId.id);
         
@@ -222,8 +243,11 @@ if (!document.getElementsByClassName) {
         // limpa os possivei movimentos
         game.clearActive(); 
         old.removeAttribute("onclick");
+
         old.removeAttribute("type"); 
-        old.removeAttribute("dama"); 
+        old.removeAttribute("dama");
+
+
         
          // seta o id da peça em seu novo lugar
         move.setAttribute("part", part);
@@ -260,22 +284,3 @@ if (!document.getElementsByClassName) {
     return game.start();
 
 })();
-
-  //tipo = select1.getAttribute('type');
-                //if (tipo != 'w') {
-                    //mLeft = mLeft-1;
-                    //mRight = mRight+1;
-                    //mTop = mTop-1;
-                //}
-
-                //if (tipo != 'b') {
-                    //mLeft = mLeft-1;
-                    //mRight = mRight+1;
-                    //mTop = mTop+1;
-                //}
-                
-                //console.log('entro');
-                //console.log(tipo);
-                //nSql = document.getElementById("sq_"+mTop+"_"+mLeft);
-                //nSql.setAttribute("class",existingClass+" active");
-                //nSql.setAttribute("onclick", "game.partMove(this.id,"+oldId+",'"+type+"')");  
