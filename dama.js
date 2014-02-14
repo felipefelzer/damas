@@ -47,6 +47,7 @@ if (!document.getElementsByClassName) {
         del.removeAttribute("type");
         del.removeAttribute("onclick");
         del.removeAttribute("part");
+        del.removeAttribute("dama");
         del.innerHTML="";
         //game.clearActive(); 
         console.log('eat')
@@ -166,8 +167,11 @@ if (!document.getElementsByClassName) {
                 nextSquareLeft.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mRight+",'"+enemy+"','"+type+"')");
                                       
             }else{
-                nextSquareLeft.setAttribute("class",existingClassLeft+" active");
-                nextSquareLeft.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mRight+", 0,'"+type+"')");
+                if (type != partTypeLeft) {
+                    nextSquareLeft.setAttribute("class",existingClassLeft+" active");
+                    nextSquareLeft.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mRight+", 0,'"+type+"')");
+                }
+                
 
             }
 
@@ -195,8 +199,10 @@ if (!document.getElementsByClassName) {
                 nextSquareRight.setAttribute("class",existingClassRight+" active");
                 nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mLeft+",'"+enemy+"','"+type+"')");
             }else{
-                nextSquareRight.setAttribute("class",existingClassRight+" active");
-                nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mLeft+", 0,'"+type+"')");
+                if (type != partTypeRight) {
+                    nextSquareRight.setAttribute("class",existingClassRight+" active");
+                    nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mLeft+", 0,'"+type+"')");
+                }
             }
 
             
@@ -234,8 +240,10 @@ if (!document.getElementsByClassName) {
                 nextSquareLeft.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mRight+",'"+enemy+"','"+type+"')");
                                       
             }else{ 
-                nextSquareLeft.setAttribute("class",existingClassLeft+" active");
-                nextSquareLeft.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mRight+", 0,'"+type+"')");
+                if (type != partTypeLeft) { 
+                    nextSquareLeft.setAttribute("class",existingClassLeft+" active");
+                    nextSquareLeft.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mLeft+", 0,'"+type+"')");
+                }
 
             }           
 
@@ -269,9 +277,11 @@ if (!document.getElementsByClassName) {
 
                 nextSquareRight.setAttribute("class",existingClassRight+" active");
                 nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mLeft+",'"+enemy+"','"+type+"')");
-            }else{
-                nextSquareRight.setAttribute("class",existingClassRight+" active");
-                nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mLeft+", 0,'"+type+"')");
+            }else{   
+                if (type != partTypeRight) { 
+                    nextSquareRight.setAttribute("class",existingClassRight+" active");
+                    nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mLeft+", 0,'"+type+"')");
+                }
             }                                                                                                                
         }
         
@@ -287,7 +297,11 @@ if (!document.getElementsByClassName) {
 
         //não clicado posição
         if (typeof other === 'object') {
-            other.removeAttribute("onclick");
+            tipo = other.getAttribute("type");
+            if (tipo == type) {
+                other.removeAttribute("onclick");
+                other.setAttribute("onclick", "game.possibleMove("+part+","+row+","+sq+",'"+tipo+"',this.id)");
+            }
         } 
         
        
