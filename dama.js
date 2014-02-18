@@ -76,6 +76,8 @@ if (!document.getElementsByClassName) {
     // ditribui peças 
     game.takePart = function(){
         p = 1;
+
+        // peçãs pretas
         for (var i = 0; i < 12; i++) {
             row = blackSquare[i].getAttribute("row");
             sq = blackSquare[i].getAttribute("sq");   
@@ -88,6 +90,7 @@ if (!document.getElementsByClassName) {
             p++;
         }
         p = 1;
+        //peças brancas
         for (var i = 20; i < 32; i++) {
             row = whiteSquare[i].getAttribute("row");
             sq = whiteSquare[i].getAttribute("sq");
@@ -120,11 +123,42 @@ if (!document.getElementsByClassName) {
     // verifica os movimentos possiveis
     game.possibleMove = function(part,row,sq,type,oldId){
 
-       
-        mRight = sq+1;
-        mLeft = sq-1;
-        //mRight = sq+1;
-        
+        cliqued =document.getElementById(oldId); 
+        typeX = cliqued.getAttribute("type");
+        DamaX = cliqued.getAttribute("dama");
+
+        if (DamaX != true) {
+
+            if (type === 'w') {
+                for (var x = row-1; x < 8; x++) {
+                    for (var y = sq; y < 8; y++) {
+                        current = document.getElementById("sq_"+x+"_"+y);
+                        partX = current.hasAttribute("part");
+                       
+                        typeCur = current.getAttribute("type");
+                        if (partX === false) {
+                            //console.log("ativo"+x+":"+y);
+
+                            break;
+
+                        }
+                    }
+                        
+                    if (partX === false) {
+                        //console.log("ativo"+x+":"+y);
+
+                        break;
+
+                    }  
+                }
+            }
+        }
+
+
+
+
+
+        /////////////////////////////////////////////////////////////////
         if (type == 'w') {   
             mTop = row-1;
         }
@@ -133,6 +167,13 @@ if (!document.getElementsByClassName) {
             mTop = row+1;
         }
 
+
+
+
+        mRight = sq+1;
+        mLeft = sq-1;
+
+        // movimento para peçãs no meio do tabuleiro
         if (mRight <= 8 && mLeft > 0 ){
             game.clearActive(); 
             nextSquareLeft  = document.getElementById("sq_"+mTop+"_"+mLeft);
@@ -147,29 +188,33 @@ if (!document.getElementsByClassName) {
             partTypeRight   = nextSquareRight.getAttribute("type");
             partTypeLeft    = nextSquareLeft.getAttribute("type");
 
-
+            console.log(partTypeLeft); 
+            console.log(partTypeRight); 
             if (partLeft === true && type != partTypeLeft) {
                 enemy  = "sq_"+mTop+"_"+mLeft;
 
-                console.log("inimigo esquerda");
+
+                //console.log("inimigo esquerda");
                 if (type == 'w') {   
                     mTop = mTop-1;
                     mLeft = mLeft-1;
-                    //mRight = mRight+1;
                 }
 
                 if (type == 'b') {
                     mTop = mTop+1;
                     mLeft = mLeft-1;
-                    //mRight = mRight+1;
                 }
+
 
                 
                 nextSquareLeft  = document.getElementById("sq_"+mTop+"_"+mLeft);
                 
-                
-                nextSquareLeft.setAttribute("class",existingClassLeft+" active");
-                nextSquareLeft.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mRight+",'"+enemy+"','"+type+"')");
+               
+                if (nextSquareLeft.hasAttribute("part") != true) {
+                    
+                    nextSquareLeft.setAttribute("class",existingClassLeft+" active");
+                    nextSquareLeft.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mRight+",'"+enemy+"','"+type+"')");
+                }
                                       
             }else{
                 if (type != partTypeLeft) {
@@ -196,9 +241,10 @@ if (!document.getElementsByClassName) {
 
                 nextSquareRight  = document.getElementById("sq_"+mTop+"_"+mRight);
             
-
-                nextSquareRight.setAttribute("class",existingClassRight+" active");
-                nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mLeft+",'"+enemy+"','"+type+"')");
+                if (nextSquareRight.hasAttribute("part") != true) { 
+                    nextSquareRight.setAttribute("class",existingClassRight+" active");
+                    nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mLeft+",'"+enemy+"','"+type+"')");
+                }
             }else{
                 if (type != partTypeRight) {
                     nextSquareRight.setAttribute("class",existingClassRight+" active");
@@ -211,6 +257,8 @@ if (!document.getElementsByClassName) {
             
         }
         
+
+        //movimento para o canto direito
         if (mRight == 9 ) {
             game.clearActive(); 
             nextSquareLeft = document.getElementById("sq_"+mTop+"_"+mLeft);
@@ -224,17 +272,18 @@ if (!document.getElementsByClassName) {
                     mTop = mTop-1;
                     mLeft = mLeft-1;
                     mRight = mRight-1;
+                    partMore = document.getElementById("sq_"+mTop-3+"_"+mLeft-3);
                 }
 
                 if (type == 'b') {
                     mTop = mTop+1;
                     mLeft = mLeft-1;
                     mRight = mRight-1;
+                    partMore = document.getElementById("sq_"+mTop+2+"_"+mLeft+3);
                 }
 
                 
                 nextSquareLeft  = document.getElementById("sq_"+mTop+"_"+mLeft);
-                
                 
                 nextSquareLeft.setAttribute("class",existingClassLeft+" active");
                 nextSquareLeft.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mRight+",'"+enemy+"','"+type+"')");
@@ -248,7 +297,7 @@ if (!document.getElementsByClassName) {
             }           
 
         }
-
+        //movimento para canto esquerdo
         if (mLeft == 0) {
             game.clearActive(); 
             nextSquareRight = document.getElementById("sq_"+mTop+"_"+mRight);
