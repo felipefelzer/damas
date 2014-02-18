@@ -123,42 +123,7 @@ if (!document.getElementsByClassName) {
     // verifica os movimentos possiveis
     game.possibleMove = function(part,row,sq,type,oldId){
 
-        cliqued =document.getElementById(oldId); 
-        typeX = cliqued.getAttribute("type");
-        DamaX = cliqued.getAttribute("dama");
-
-        if (DamaX != true) {
-
-            if (type === 'w') {
-                for (var x = row-1; x < 8; x++) {
-                    for (var y = sq; y < 8; y++) {
-                        current = document.getElementById("sq_"+x+"_"+y);
-                        partX = current.hasAttribute("part");
-                       
-                        typeCur = current.getAttribute("type");
-                        if (partX === false) {
-                            //console.log("ativo"+x+":"+y);
-
-                            break;
-
-                        }
-                    }
-                        
-                    if (partX === false) {
-                        //console.log("ativo"+x+":"+y);
-
-                        break;
-
-                    }  
-                }
-            }
-        }
-
-
-
-
-
-        /////////////////////////////////////////////////////////////////
+       
         if (type == 'w') {   
             mTop = row-1;
         }
@@ -197,23 +162,24 @@ if (!document.getElementsByClassName) {
                 //console.log("inimigo esquerda");
                 if (type == 'w') {   
                     mTop = mTop-1;
-                    mLeft = mLeft-1;
+                    mLeft = Math.abs(mLeft--); 
                 }
 
                 if (type == 'b') {
                     mTop = mTop+1;
-                    mLeft = mLeft-1;
+                    mLeft = Math.abs(mLeft--);
                 }
-
 
                 
                 nextSquareLeft  = document.getElementById("sq_"+mTop+"_"+mLeft);
                 
                
-                if (nextSquareLeft.hasAttribute("part") != true) {
+                if (nextSquareLeft.hasAttribute("part")) {
                     
                     nextSquareLeft.setAttribute("class",existingClassLeft+" active");
                     nextSquareLeft.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mRight+",'"+enemy+"','"+type+"')");
+                }else{
+                    console.log("era erro!!");
                 }
                                       
             }else{
@@ -272,21 +238,20 @@ if (!document.getElementsByClassName) {
                     mTop = mTop-1;
                     mLeft = mLeft-1;
                     mRight = mRight-1;
-                    partMore = document.getElementById("sq_"+mTop-3+"_"+mLeft-3);
                 }
 
                 if (type == 'b') {
                     mTop = mTop+1;
                     mLeft = mLeft-1;
                     mRight = mRight-1;
-                    partMore = document.getElementById("sq_"+mTop+2+"_"+mLeft+3);
                 }
 
                 
                 nextSquareLeft  = document.getElementById("sq_"+mTop+"_"+mLeft);
-                
-                nextSquareLeft.setAttribute("class",existingClassLeft+" active");
-                nextSquareLeft.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mRight+",'"+enemy+"','"+type+"')");
+                if (nextSquareLeft.hasAttribute("part") != true) {
+                    nextSquareLeft.setAttribute("class",existingClassLeft+" active");
+                    nextSquareLeft.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mRight+",'"+enemy+"','"+type+"')");
+                }
                                       
             }else{ 
                 if (type != partTypeLeft) { 
@@ -322,9 +287,10 @@ if (!document.getElementsByClassName) {
 
                 nextSquareRight  = document.getElementById("sq_"+mTop+"_"+mRight);
             
-
-                nextSquareRight.setAttribute("class",existingClassRight+" active");
-                nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mRight+",'"+enemy+"','"+type+"')");
+                if (nextSquareRight.hasAttribute("part") != true) {
+                    nextSquareRight.setAttribute("class",existingClassRight+" active");
+                    nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mRight+",'"+enemy+"','"+type+"')");
+                }
             }else{ 
                 if (type != partTypeRight) { 
                     nextSquareRight.setAttribute("class",existingClassRight+" active");
@@ -378,10 +344,18 @@ if (!document.getElementsByClassName) {
         
         //executa o movimento
         if (type == "w") {
-            move.setAttribute("onclick", "game.possibleMove("+part+","+row+","+sq+",'w',this.id)"); 
-            move.innerHTML+="<span class='partWhite'>(0)</span>";
-            move.setAttribute("type", 'w');
-            move.setAttribute("dama", false);
+            console.log(row);
+            if (row === 1) {
+                move.setAttribute("onclick", "game.possibleMove("+part+","+row+","+sq+",'w',this.id)"); 
+                move.innerHTML+="<span class='partWhite'>(D)</span>";
+                move.setAttribute("type", 'w');
+                move.setAttribute("dama", true); 
+            }else{
+                move.setAttribute("onclick", "game.possibleMove("+part+","+row+","+sq+",'w',this.id)"); 
+                move.innerHTML+="<span class='partWhite'>(0)</span>";
+                move.setAttribute("type", 'w');
+                move.setAttribute("dama", false);
+            }
 
             
         }else{
