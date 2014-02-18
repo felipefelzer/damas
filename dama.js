@@ -50,7 +50,6 @@ if (!document.getElementsByClassName) {
         del.removeAttribute("dama");
         del.innerHTML="";
         //game.clearActive(); 
-        console.log('eat')
     }
 
 
@@ -104,7 +103,12 @@ if (!document.getElementsByClassName) {
     // limpa a class active
     game.clearActive = function (){
         for (var i = 1; i < whiteSquare.length; i++) {
-            whiteSquare[i].setAttribute("class","square white");
+             whiteSquare[i].setAttribute("class","square white");
+            if (whiteSquare[i].hasAttribute("part") != true) {
+                
+                whiteSquare[i].removeAttribute("onclick");
+            }
+           // 
         };
         
     }
@@ -116,8 +120,10 @@ if (!document.getElementsByClassName) {
     // verifica os movimentos possiveis
     game.possibleMove = function(part,row,sq,type,oldId){
 
-        mLeft = sq-1;
+       
         mRight = sq+1;
+        mLeft = sq-1;
+        //mRight = sq+1;
         
         if (type == 'w') {   
             mTop = row-1;
@@ -140,23 +146,22 @@ if (!document.getElementsByClassName) {
 
             partTypeRight   = nextSquareRight.getAttribute("type");
             partTypeLeft    = nextSquareLeft.getAttribute("type");
-            //console.log(partLeft);
 
 
             if (partLeft === true && type != partTypeLeft) {
-                console.log("inimigo a esquerda");
                 enemy  = "sq_"+mTop+"_"+mLeft;
 
+                console.log("inimigo esquerda");
                 if (type == 'w') {   
                     mTop = mTop-1;
                     mLeft = mLeft-1;
-                    mRight = mRight+1;
+                    //mRight = mRight+1;
                 }
 
                 if (type == 'b') {
                     mTop = mTop+1;
                     mLeft = mLeft-1;
-                    mRight = mRight+1;
+                    //mRight = mRight+1;
                 }
 
                 
@@ -177,19 +182,15 @@ if (!document.getElementsByClassName) {
 
 
              if (partRight === true && type != partTypeRight) {
-                console.log("inimigo a direita");
-                
                 enemy  = "sq_"+mTop+"_"+mRight;
 
                 if (type == 'w') {   
                     mTop = mTop-1;
-                    mLeft = mLeft-1;
                     mRight = mRight+1;
                 }
 
                 if (type == 'b') {
                     mTop = mTop+1;
-                    mLeft = mLeft-1;
                     mRight = mRight+1;
                 }
 
@@ -217,7 +218,6 @@ if (!document.getElementsByClassName) {
             partLeft = nextSquareLeft.hasAttribute("part");
             partTypeLeft    = nextSquareLeft.getAttribute("type");   
             if (partLeft === true && type != partTypeLeft) {
-                console.log("inimigo a esquerda");
                 enemy  = "sq_"+mTop+"_"+mLeft;
 
                 if (type == 'w') {   
@@ -258,7 +258,6 @@ if (!document.getElementsByClassName) {
             if (partRight === true && type != partTypeRight) {
 
                 enemy  = "sq_"+mTop+"_"+mRight;
-                console.log("inimigo a direita");
      
                 if (type == 'w') {   
                     mTop = mTop-1;
@@ -276,11 +275,11 @@ if (!document.getElementsByClassName) {
             
 
                 nextSquareRight.setAttribute("class",existingClassRight+" active");
-                nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mLeft+",'"+enemy+"','"+type+"')");
-            }else{   
+                nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mRight+",'"+enemy+"','"+type+"')");
+            }else{ 
                 if (type != partTypeRight) { 
                     nextSquareRight.setAttribute("class",existingClassRight+" active");
-                    nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mLeft+", 0,'"+type+"')");
+                    nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mRight+", 0,'"+type+"')");
                 }
             }                                                                                                                
         }
@@ -348,7 +347,6 @@ if (!document.getElementsByClassName) {
 
         if ( enemy !=0 ) {
             game.eatPart(enemy);
-            //console.log(enemy);
         }      
        
     }
