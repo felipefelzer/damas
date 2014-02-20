@@ -126,11 +126,19 @@ if (!document.getElementsByClassName) {
            ///movimento da Dama
             dow = row+1;
             right = sq+1;
-            for (var x = row; x < 8; x++) {
+            for (var x = dow; x < 9; x++) {
                 console.log("linha"+x);
-                for (var y = sq; y < 8; y++) {
-                    console.log("Coluna"+y)
-                };
+                
+                    w = Math.abs((x+right)%2);
+                    if (right < 9) {
+                        console.log("Coluna"+right+"w="+w);
+                    }else{
+                        break;
+                    }
+                    
+                    right++;
+                    
+                
             };
 
         }else{
