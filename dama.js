@@ -122,25 +122,167 @@ if (!document.getElementsByClassName) {
         oldPos = document.getElementById(oldId);
         dama = oldPos.getAttribute("dama");  
 
+        ///movimento da Dama
+        /// verifica se a peça e uma Dama
         if (dama === "true") {
-           ///movimento da Dama
+            // proxima linha em para baixo relação a peça clicada
             dow = row+1;
+            // proxima linha para cima em relação a peça clicada
+            up = row-1;
+            // proximo qudrado a esquerda com relação ao clicado
             right = sq+1;
+            
+            rightUp = sq+1;
+            // proximo quadrado a direita com relação ao clicado
+            leftUp = sq-1;
+            // proximo quadrado a direita com relação ao clicado
+            left = sq-1;
+            // variavel pra controlar obstaulos
+            obstacleL = 0;
+            obstacleR = 0;
+            obstacleUpR = 0;
+            obstacleUpL = 0;
+            //
+            DamaType = oldPos.getAttribute("type");
+           
+            for (var x = up; x > 0; x--) {
+
+                console.log("linha"+x);
+                //break;
+                // calcula apenas os quadrados brancos
+                w = Math.abs((x+leftUp)%2);
+                // verifica se não é o ultimo quadrado
+                if (left > 0) {
+                   
+                    // movimenta pra direita e pra baixo
+                    nextDamaL = document.getElementById("sq_"+x+"_"+leftUp);
+                    
+                    if (nextDamaL.hasAttribute("part")) {
+                        console.log("obstaculo");
+                        tipo = nextDamaL.getAttribute("type");
+                        if (tipo != DamaType) {
+                            enemy  = "sq_"+x+"_"+leftUp;
+                        }else{
+                            enemy = "0";
+                            break;
+                        }
+                        if (obstacleUpL > 1) {
+                            break;
+                        };
+
+                        obstacleUpL++;
+                    }else{                   
+                        nextDamaL.setAttribute("class",existingClassLeft+" active");
+                        nextDamaL.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+x+"_"+leftUp+",'"+enemy+"','"+type+"')");
+                    }
+                    leftUp++; 
+                    
+                };
+
+            }  
+            for (var x = up; x > 0; x--) {
+
+                console.log("linha"+x);
+                //break;
+                // calcula apenas os quadrados brancos
+                w = Math.abs((x+rightUp)%2);
+                // verifica se não é o ultimo quadrado
+                if (rightUp < 9) {
+                   
+                    // movimenta pra direita e pra baixo
+                    nextDamaR = document.getElementById("sq_"+x+"_"+rightUp);
+                    
+                    if (nextDamaR.hasAttribute("part")) {
+                        console.log("obstaculo");
+                        tipo = nextDamaR.getAttribute("type");
+                        if (tipo != DamaType) {
+                            enemy  = "sq_"+x+"_"+right;
+                        }else{
+                            enemy = "0";
+                            break;
+                        }
+                        if (obstacleUpR > 1) {
+                            break;
+                        };
+
+                        obstacleUpR++;
+                    }else{                   
+                        nextDamaR.setAttribute("class",existingClassLeft+" active");
+                        nextDamaR.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+x+"_"+rightUp+",'"+enemy+"','"+type+"')");
+                    }
+                    rightUp++; 
+                    
+                };
+
+            }  
+            
+            
+            // caminha pra baixo em relação ao clicado
             for (var x = dow; x < 9; x++) {
                 console.log("linha"+x);
-                
-                    w = Math.abs((x+right)%2);
-                    if (right < 9) {
-                        console.log("Coluna"+right+"w="+w);
-                    }else{
-                        break;
-                    }
+                // calcula apenas os quadrados brancos
+                w = Math.abs((x+right)%2);
+                // verifica se não é o ultimo quadrado
+                if (right < 9) {
+                   
+                    // movimenta pra direita e pra baixo
+                    nextDamaR = document.getElementById("sq_"+x+"_"+right);
                     
-                    right++;
-                    
-                
-            };
+                    if (nextDamaR.hasAttribute("part")) {
+                        console.log("obstaculo");
+                        tipo = nextDamaR.getAttribute("type");
+                        if (tipo != DamaType) {
+                            enemy  = "sq_"+x+"_"+right;
+                        }else{
+                            enemy = "0";
+                            break;
+                        }
+                        if (obstacleR > 1) {
+                            break;
+                        };
 
+                        obstacleR++;
+                    }else{
+                        nextDamaR.setAttribute("class",existingClassLeft+" active");
+                        nextDamaR.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+x+"_"+right+",'"+enemy+"','"+type+"')");
+                    }
+                    right++; 
+                    
+                };
+
+             // fim da dama
+            }
+                
+            for (var x = dow; x < 9; x++) { 
+                if (left > 0) { 
+                // movimenta pra esquerda e pra baixo
+                    nextDamaL = document.getElementById("sq_"+x+"_"+left); 
+                    if (nextDamaL.hasAttribute("part")) {
+                        console.log("obstaculo");
+                        tipoL = nextDamaL.getAttribute("type");
+                        if (tipoL != DamaType) {
+                            enemy  = "sq_"+x+"_"+left;
+                        }else{
+                            enemy = "0";
+                            break;
+                        }
+                        if (obstacleL > 1) {
+                            break;
+                        };
+
+                        obstacleL++;
+                    }else{
+                        nextDamaL.setAttribute("class",existingClassLeft+" active");
+                        nextDamaL.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+x+"_"+left+",'"+enemy+"','"+type+"')");
+                    } 
+                    console.log("Coluna"+right+"w="+w);
+                // se for o ultimo quadrado a esquerda interrompe o loop
+                }else{
+                    break;
+                }
+                // incrementa o valor a direita    
+               left--; 
+            }
         }else{
         
         if (type == 'w') {   
@@ -328,7 +470,6 @@ if (!document.getElementsByClassName) {
                 other.setAttribute("onclick", "game.possibleMove("+part+","+row+","+sq+",'"+tipo+"',this.id)");
             }
         } 
-        
        
         //posição antiga
         old = document.getElementById(oldId.id);
@@ -336,16 +477,12 @@ if (!document.getElementsByClassName) {
         //id da peça
         part = oldId.getAttribute("part");
         
-        // limpa os possivei movimentos
+          // limpa os possivei movimentos
         game.clearActive(); 
-        old.removeAttribute("onclick");
-
+        old.removeAttribute("onclick");   
         old.removeAttribute("type"); 
-        old.removeAttribute("dama");
-
-
-        
-         // seta o id da peça em seu novo lugar
+       
+        // seta o id da peça em seu novo lugar
         move.setAttribute("part", part);
 
         // pega a linha e quadrado novo
@@ -363,10 +500,19 @@ if (!document.getElementsByClassName) {
                 move.setAttribute("type", 'w');
                 move.setAttribute("dama", true); 
             }else{
-                move.setAttribute("onclick", "game.possibleMove("+part+","+row+","+sq+",'w',this.id)"); 
-                move.innerHTML+="<span class='partWhite'>(0)</span>";
-                move.setAttribute("type", 'w');
-                move.setAttribute("dama", false);
+                if (old.getAttribute("dama") === "true"){
+                
+                    move.setAttribute("onclick", "game.possibleMove("+part+","+row+","+sq+",'w',this.id)"); 
+                    move.innerHTML+="<span class='partWhite'>(D)</span>";
+                    move.setAttribute("type", 'w');
+                    move.setAttribute("dama", true);
+                }else{
+                
+                    move.setAttribute("onclick", "game.possibleMove("+part+","+row+","+sq+",'w',this.id)"); 
+                    move.innerHTML+="<span class='partWhite'>(0)</span>";
+                    move.setAttribute("type", 'w');
+                    move.setAttribute("dama", false);
+                }
             }
 
             
@@ -378,12 +524,24 @@ if (!document.getElementsByClassName) {
                 move.setAttribute("dama", true); 
             }
             else{
-                move.innerHTML+="<span class='partBlack'>(0)</span>";
-                move.setAttribute("onclick", "game.possibleMove("+part+","+row+","+sq+",'b',this.id)");
-                move.setAttribute("type", 'b');
-                move.setAttribute("dama", false);         
+                if (old.getAttribute("dama") === "true"){
+                
+                    move.setAttribute("onclick", "game.possibleMove("+part+","+row+","+sq+",'b',this.id)"); 
+                    move.innerHTML+="<span class='partBlack'>(D)</span>";
+                    move.setAttribute("type", 'b');
+                    move.setAttribute("dama", true);
+                }else{
+                
+                    move.setAttribute("onclick", "game.possibleMove("+part+","+row+","+sq+",'b',this.id)"); 
+                    move.innerHTML+="<span class='partBlack'>(0)</span>";
+                    move.setAttribute("type", 'b');
+                    move.setAttribute("dama", false);
+                }             
             }
-        }
+        } 
+        
+       
+        old.removeAttribute("dama"); 
         // limpa o guadrado anterior
         old.innerHTML="";
         old.removeAttribute("part");
