@@ -152,7 +152,7 @@ if (!document.getElementsByClassName) {
                 // calcula apenas os quadrados brancos
                 w = Math.abs((x+leftUp)%2);
                 // verifica se não é o ultimo quadrado
-                if (left > 0) {
+                if (leftUp > 0) {
                    
                     // movimenta pra direita e pra baixo
                     nextDamaL = document.getElementById("sq_"+x+"_"+leftUp);
@@ -175,7 +175,7 @@ if (!document.getElementsByClassName) {
                         nextDamaL.setAttribute("class",existingClassLeft+" active");
                         nextDamaL.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+x+"_"+leftUp+",'"+enemy+"','"+type+"')");
                     }
-                    leftUp++; 
+                    leftUp--; 
                     
                 };
 
