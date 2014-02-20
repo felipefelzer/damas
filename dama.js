@@ -147,10 +147,6 @@ if (!document.getElementsByClassName) {
            
             for (var x = up; x > 0; x--) {
 
-                console.log("linha"+x);
-                //break;
-                // calcula apenas os quadrados brancos
-                w = Math.abs((x+leftUp)%2);
                 // verifica se não é o ultimo quadrado
                 if (leftUp > 0) {
                    
@@ -216,7 +212,6 @@ if (!document.getElementsByClassName) {
 
             }  
             
-            
             // caminha pra baixo em relação ao clicado
             for (var x = dow; x < 9; x++) {
                 console.log("linha"+x);
@@ -247,10 +242,7 @@ if (!document.getElementsByClassName) {
                         nextDamaR.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+x+"_"+right+",'"+enemy+"','"+type+"')");
                     }
                     right++; 
-                    
                 };
-
-             // fim da dama
             }
                 
             for (var x = dow; x < 9; x++) { 
@@ -285,18 +277,55 @@ if (!document.getElementsByClassName) {
             }
         }else{
         
-        if (type == 'w') {   
-            mTop = row-1;
-        }
+            if (type == 'w') {   
+                mTop = row-1;
+            }
 
-        if (type == 'b') {
-            mTop = row+1;
-        }
+            if (type == 'b') {
+                mTop = row+1;
+            }
 
-        mRight = sq+1;
-        mLeft = sq-1;
-        //console.log(oldId);
-         
+            mRight = sq+1;
+            mLeft = sq-1;
+            partType = oldPos.getAttribute("type"); 
+            obstaclePartL = 0;
+           
+            for (var x = mTop; x < 9; x++) { 
+                if (mLeft > 0) {
+                    
+                // movimenta pra esquerda e pra baixo
+                    nextL = document.getElementById("sq_"+x+"_"+mLeft); 
+                    if (nextL.hasAttribute("part")) {
+                        console.log("obstaculo");
+                        tipoL = nextL.getAttribute("type");
+                        if (tipoL != partType) {
+                            enemy  = "sq_"+x+"_"+mLeft;
+                            obstaclePartL++;
+                        }else{
+                            enemy = "0";
+                            break;
+                        }
+                        if (obstaclePartL > 1) {
+                            break;
+                        };
+
+                        
+                    }else{
+                        game.clearActive();
+                        enemy = "0";
+                        existingClassLeft   = nextL.getAttribute("class"); 
+                        nextL.setAttribute("class",existingClassLeft+" active");
+                        nextL.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+x+"_"+mLeft+",'"+enemy+"','"+type+"')");
+                    } 
+                // se for o ultimo quadrado a esquerda interrompe o loop
+                }else{
+                    break;
+                }
+                // incrementa o valor a direita    
+               mLeft--; 
+            }
+
+        /* 
         // movimento para peçãs no meio do tabuleiro
         if (mRight <= 8 && mLeft > 0 ){
             game.clearActive(); 
@@ -377,6 +406,8 @@ if (!document.getElementsByClassName) {
             }
 
         }
+
+        
         
 
         //movimento para o canto direito
@@ -414,7 +445,7 @@ if (!document.getElementsByClassName) {
 
             }           
 
-        }
+        }    
         //movimento para canto esquerdo
         if (mLeft == 0) {
             game.clearActive(); 
@@ -451,10 +482,10 @@ if (!document.getElementsByClassName) {
                 }
             }                                                                                                                
         }
-        
+           */
         }
 
-        
+          
 
     }
 
