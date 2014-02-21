@@ -119,6 +119,7 @@ if (!document.getElementsByClassName) {
     // verifica os movimentos possiveis
     game.possibleMove = function(part,row,sq,type,oldId){
         
+                game.clearActive();
         oldPos = document.getElementById(oldId);
         dama = oldPos.getAttribute("dama");  
 
@@ -289,200 +290,150 @@ if (!document.getElementsByClassName) {
             mLeft = sq-1;
             partType = oldPos.getAttribute("type"); 
             obstaclePartL = 0;
-           
-            for (var x = mTop; x < 9; x++) { 
-                if (mLeft > 0) {
-                    
-                // movimenta pra esquerda e pra baixo
-                    nextL = document.getElementById("sq_"+x+"_"+mLeft); 
-                    if (nextL.hasAttribute("part")) {
-                        console.log("obstaculo");
-                        tipoL = nextL.getAttribute("type");
-                        if (tipoL != partType) {
-                            enemy  = "sq_"+x+"_"+mLeft;
-                            obstaclePartL++;
-                        }else{
-                            enemy = "0";
-                            break;
-                        }
-                        if (obstaclePartL > 1) {
-                            break;
-                        };
-
+            if (partType === "b") {
+                enemy = "0";  
+                for (var x = mTop; x < 9; x++) { 
+                    if (mLeft > 0) {
                         
+                    // movimenta pra esquerda e pra baixo
+                        nextL = document.getElementById("sq_"+x+"_"+mLeft);
+                         
+                        existingClassLeft   = nextL.getAttribute("class");
+                        if (nextL.hasAttribute("part")) {
+                            console.log("obstaculo");
+                            
+                            tipoL = nextL.getAttribute("type");
+                            if (tipoL != partType) {
+                                enemy  = "sq_"+x+"_"+mLeft;
+                                
+                                
+                            }else{
+                                break;
+                            }
+                            
+                            
+                        }else{
+                            nextL.setAttribute("class",existingClassLeft+" active");
+                            nextL.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+x+"_"+mLeft+",'"+enemy+"','"+type+"')");
+                            break;
+                        } 
+                    // se for o ultimo quadrado a esquerda interrompe o loop
                     }else{
-                        game.clearActive();
-                        enemy = "0";
-                        existingClassLeft   = nextL.getAttribute("class"); 
-                        nextL.setAttribute("class",existingClassLeft+" active");
-                        nextL.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+x+"_"+mLeft+",'"+enemy+"','"+type+"')");
-                    } 
-                // se for o ultimo quadrado a esquerda interrompe o loop
-                }else{
-                    break;
-                }
-                // incrementa o valor a direita    
-               mLeft--; 
-            }
-
-        /* 
-        // movimento para peçãs no meio do tabuleiro
-        if (mRight <= 8 && mLeft > 0 ){
-            game.clearActive(); 
-            nextSquareLeft  = document.getElementById("sq_"+mTop+"_"+mLeft);
-            nextSquareRight = document.getElementById("sq_"+mTop+"_"+mRight);
-
-            existingClassLeft   = nextSquareLeft.getAttribute("class");
-            existingClassRight  = nextSquareRight.getAttribute("class"); 
-
-            partLeft    = nextSquareLeft.hasAttribute("part");
-            partRight   = nextSquareRight.hasAttribute("part");
-
-            if (partLeft === true) {
-
-                partTypeLeft    = nextSquareLeft.getAttribute("type");   
-
-                if (type != partTypeLeft) {
-                    enemy  = "sq_"+mTop+"_"+mLeft;  
-                    if (type == 'w') {   
-                        mTopL = mTop-1;
+                        break;
                     }
-
-                    if (type == 'b') {
-                        mTopL = mTop+1;
+                    mLeft--;
+               }
+                enemy = "0"; 
+                for (var x = mTop; x < 9; x++) {
+                    if (mRight < 9) {
+                        
+                    // movimenta pra esquerda e pra baixo
+                        nextR = document.getElementById("sq_"+x+"_"+mRight);
+                         
+                        existingClassLeft   = nextR.getAttribute("class");
+                        if (nextR.hasAttribute("part")) {
+                            console.log("obstaculo");
+                            
+                            tipoR = nextR.getAttribute("type");
+                            if (tipoR != partType) {
+                                enemy  = "sq_"+x+"_"+mRight;
+                                
+                                
+                            }else{
+                                break;
+                            }
+                            
+                            
+                        }else{
+                            
+                            nextR.setAttribute("class",existingClassLeft+" active");
+                            nextR.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+x+"_"+mRight+",'"+enemy+"','"+type+"')");
+                            break;
+                        } 
+                    // se for o ultimo quadrado a esquerda interrompe o loop
+                    }else{
+                        break;
                     }    
-                        mLeft = mLeft-1;  
 
-                }else{
-                    mTopL = mTop;
+                    // incrementa o valor a direita    
+                mRight++; 
                 }
 
-                
-                nextSquareLeft  = document.getElementById("sq_"+mTopL+"_"+mLeft);
-                
-               
-                if (!nextSquareLeft.hasAttribute("part")) {
-                    
-                    nextSquareLeft.setAttribute("class",existingClassLeft+" active");
-                    nextSquareLeft.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mRight+",'"+enemy+"','"+type+"')");
-                }
-                                      
-            }else{
-                
-                    nextSquareLeft.setAttribute("class",existingClassLeft+" active");
-                    nextSquareLeft.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mRight+", 0,'"+type+"')");
-                
+
             }
-
-
-             if (partRight === true) {
-                
-                partTypeRight   = nextSquareRight.getAttribute("type");
-
-                if (type != partTypeRight) { 
-                    enemy  = "sq_"+mTop+"_"+mRight;
-
-
-                    if (type == 'w') {   
-                        mTopR = mTop-1;
+            if (partType === "w") {
+                enemy = "0";  
+                for (var x = mTop; x > 0; x--) { 
+                    if (mLeft > 0) {
+                        
+                    // movimenta pra esquerda e pra baixo
+                        nextL = document.getElementById("sq_"+x+"_"+mLeft);
+                        existingClassLeft   = nextL.getAttribute("class");
+                        if (nextL.hasAttribute("part")) {
+                            console.log("obstaculo");
+                            
+                            tipoL = nextL.getAttribute("type");
+                            if (tipoL != partType) {
+                                enemy  = "sq_"+x+"_"+mLeft;
+                                
+                                
+                            }else{
+                                break;
+                            }
+                            obstaclePartL++;
+                            
+                            
+                           
+                        }else{
+                            
+                            nextL.setAttribute("class",existingClassLeft+" active");
+                            nextL.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+x+"_"+mLeft+",'"+enemy+"','"+type+"')");
+                            break;
+                        } 
+                    // se for o ultimo quadrado a esquerda interrompe o loop
+                    }else{
+                        break;
                     }
+                    // incrementa o valor a direita    
+                mLeft--; 
+                }
 
-                    if (type == 'b') {
-                        mTopR = mTop+1;
+                enemy = "0"; 
+                for (var x = mTop; x > 0; x--) { 
+                    if (mRight < 9) {
+                        
+                    // movimenta pra esquerda e pra baixo
+                        nextR = document.getElementById("sq_"+x+"_"+mRight);
+                         
+                        existingClassLeft   = nextR.getAttribute("class");
+                        if (nextR.hasAttribute("part")) {
+                            console.log("obstaculo");
+                            
+                            tipoR = nextR.getAttribute("type");
+                            if (tipoR != partType) {
+                                enemy  = "sq_"+x+"_"+mRight;
+                                
+                                
+                            }else{
+                                break;
+                            }
+                            
+                            
+                        }else{
+                            
+                            nextR.setAttribute("class",existingClassLeft+" active");
+                            nextR.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+x+"_"+mRight+",'"+enemy+"','"+type+"')");
+                            break;
+                        } 
+                    // se for o ultimo quadrado a esquerda interrompe o loop
+                    }else{
+                        break;
                     }    
-                    mRight = mRight+1;
-                }else{
-                    mTopR = mTop;
-                }          
-                nextSquareRight  = document.getElementById("sq_"+mTopR+"_"+mRight);
-            
-                if (!nextSquareRight.hasAttribute("part")) { 
-                    nextSquareRight.setAttribute("class",existingClassRight+" active");
-                    nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mLeft+",'"+enemy+"','"+type+"')");
+
+                    // incrementa o valor a direita    
+                mRight++; 
                 }
-            }else{
-                    nextSquareRight.setAttribute("class",existingClassRight+" active");
-                    nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mLeft+", 0,'"+type+"')");
-            }
-
-        }
-
-        
-        
-
-        //movimento para o canto direito
-        if (mRight == 9 ) {
-            game.clearActive(); 
-            nextSquareLeft = document.getElementById("sq_"+mTop+"_"+mLeft);
-            existingClassLeft = nextSquareLeft.getAttribute("class");
-            partLeft = nextSquareLeft.hasAttribute("part");
-            partTypeLeft    = nextSquareLeft.getAttribute("type");   
-            if (partLeft === true && type != partTypeLeft) {
-                enemy  = "sq_"+mTop+"_"+mLeft;
-
-                if (partTypeLeft == 'w') {   
-                    mTop = mTop-1;
-                    mLeft = mLeft-1;
-                    mRight = mRight-1;
-                }
-
-                if (type == 'b') {
-                    mTop = mTop+1;
-                    mLeft = mLeft-1;
-                    mRight = mRight-1;
-                }
-
-                
-                nextSquareLeft  = document.getElementById("sq_"+mTop+"_"+mLeft);
-                if (nextSquareLeft.hasAttribute("part") != true) {
-                    nextSquareLeft.setAttribute("class",existingClassLeft+" active");
-                    nextSquareLeft.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mRight+",'"+enemy+"','"+type+"')");
-                }
-                                      
-            }else{ 
-                    nextSquareLeft.setAttribute("class",existingClassLeft+" active");
-                    nextSquareLeft.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mLeft+", 0,'"+type+"')");
-
-            }           
-
-        }    
-        //movimento para canto esquerdo
-        if (mLeft == 0) {
-            game.clearActive(); 
-            nextSquareRight = document.getElementById("sq_"+mTop+"_"+mRight);
-            existingClassRight = nextSquareRight.getAttribute("class"); 
-            partRight = nextSquareRight.hasAttribute("part");
-            partTypeRight   = nextSquareRight.getAttribute("type");    
-            if (partRight === true && type != partTypeRight) {
-
-                enemy  = "sq_"+mTop+"_"+mRight;
-     
-                if (type == 'w') {   
-                    mTop = mTop-1;
-                    mLeft = mLeft+1;
-                    mRight = mRight+1;
-                }
-
-                if (type == 'b') {
-                    mTop = mTop+1;
-                    mLeft = mLeft+1;
-                    mRight = mRight+1;
-                }
-
-                nextSquareRight  = document.getElementById("sq_"+mTop+"_"+mRight);
-            
-                if (nextSquareRight.hasAttribute("part") != true) {
-                    nextSquareRight.setAttribute("class",existingClassRight+" active");
-                    nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mRight+",'"+enemy+"','"+type+"')");
-                }
-            }else{ 
-                if (type != partTypeRight) { 
-                    nextSquareRight.setAttribute("class",existingClassRight+" active");
-                    nextSquareRight.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+mTop+"_"+mRight+", 0,'"+type+"')");
-                }
-            }                                                                                                                
-        }
-           */
+            }              
         }
 
           
@@ -577,7 +528,7 @@ if (!document.getElementsByClassName) {
         old.innerHTML="";
         old.removeAttribute("part");
 
-        if ( enemy !=0 ) {
+        if ( enemy != "0" ) {
             game.eatPart(enemy);
         }      
        
