@@ -105,7 +105,7 @@ if (!document.getElementsByClassName) {
     }
     // limpa a class active
     game.clearActive = function (){
-        for (var i = 1; i < whiteSquare.length; i++) {
+        for (var i = 0; i < whiteSquare.length; i++) {
              whiteSquare[i].setAttribute("class","square white");
             if (whiteSquare[i].hasAttribute("part") != true) {
                 
@@ -289,9 +289,10 @@ if (!document.getElementsByClassName) {
             mRight = sq+1;
             mLeft = sq-1;
             partType = oldPos.getAttribute("type"); 
-            obstaclePartL = 0;
             if (partType === "b") {
                 enemy = "0";  
+                obstacleL = 0;
+                obstacleR = 0;
                 for (var x = mTop; x < 9; x++) { 
                     if (mLeft > 0) {
                         
@@ -309,10 +310,15 @@ if (!document.getElementsByClassName) {
                                 
                             }else{
                                 break;
-                            }
+                            } 
+                             
+                            obstacleL++; 
                             
                             
-                        }else{
+                        }else{  
+                            if (obstacleL > 1) {
+                                break;
+                            };  
                             nextL.setAttribute("class",existingClassLeft+" active");
                             nextL.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+x+"_"+mLeft+",'"+enemy+"','"+type+"')");
                             break;
@@ -342,10 +348,13 @@ if (!document.getElementsByClassName) {
                             }else{
                                 break;
                             }
-                            
+                              
+                            obstacleR++; 
                             
                         }else{
-                            
+                            if (obstacleR > 1) {
+                                break;
+                            }; 
                             nextR.setAttribute("class",existingClassLeft+" active");
                             nextR.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+x+"_"+mRight+",'"+enemy+"','"+type+"')");
                             break;
@@ -362,7 +371,9 @@ if (!document.getElementsByClassName) {
 
             }
             if (partType === "w") {
-                enemy = "0";  
+                enemy = "0";
+                obstacleL = 0;
+                obstacleR = 0;
                 for (var x = mTop; x > 0; x--) { 
                     if (mLeft > 0) {
                         
@@ -379,13 +390,16 @@ if (!document.getElementsByClassName) {
                                 
                             }else{
                                 break;
-                            }
-                            obstaclePartL++;
+                            } 
+                             
+                            obstacleL++;
                             
                             
                            
                         }else{
-                            
+                            if (obstacleL > 1) {
+                                break;
+                            };  
                             nextL.setAttribute("class",existingClassLeft+" active");
                             nextL.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+x+"_"+mLeft+",'"+enemy+"','"+type+"')");
                             break;
@@ -416,11 +430,15 @@ if (!document.getElementsByClassName) {
                                 
                             }else{
                                 break;
-                            }
+                            } 
+                           
+                            obstacleR++; 
                             
                             
                         }else{
-                            
+                            if (obstacleR > 1) {
+                                break;
+                            };   
                             nextR.setAttribute("class",existingClassLeft+" active");
                             nextR.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+x+"_"+mRight+",'"+enemy+"','"+type+"')");
                             break;
