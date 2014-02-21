@@ -4,7 +4,10 @@
 
         <title>Jogo de Damas</title>
         <style>
-           
+            #game{
+                
+                width:480px;
+            }
             .row{
                 height:60px;
                 width:480px;
@@ -38,15 +41,30 @@
             .active{
                 cursor:pointer;
                 background-color:red;
+            } 
+            #Placar{
+                height:30px;
+                text-align:center;
+            }
+            #PlacarWhite,#PlacarBlack{
+                
+                font-size:28px;
+                height:35px;
+                background:#666;
             }  
+            #PlacarWhite{ color:#ccc;}
+            #PlacarBlack{ color:#000;}
         </style>
         
     </head>
     <body>
         <div id="game">
+            <div id="Placar"></div>
+            <div id="PlacarWhite"></div>
             <div id="board">
                 
             </div>
+            <div id="PlacarBlack"></div>
         </div>
     </body>
     <script src="dama.js"></script>      

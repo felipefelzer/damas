@@ -8,7 +8,8 @@ var game = {};
 var board = document.getElementById("board"); 
 var blackSquare = document.getElementsByClassName("white");
 var whiteSquare = document.getElementsByClassName("white"); 
-
+var white = 0;
+var black = 0;
 var Possible = new Array();
 // para funcionar no IE
 
@@ -44,11 +45,31 @@ if (!document.getElementsByClassName) {
 
     game.eatPart = function(enemy){
         del = document.getElementById(enemy);
+        type = del.getAttribute("type");
         del.removeAttribute("type");
         del.removeAttribute("onclick");
         del.removeAttribute("part");
         del.removeAttribute("dama");
         del.innerHTML="";
+
+
+
+        if (type === "b") {
+            black++;
+            document.getElementById("PlacarBlack").innerHTML+="<span>(0)</span>"
+        };
+        if (type === "w") {
+            document.getElementById("PlacarWhite").innerHTML+="<span>(0)</span>"
+            white++;
+        };
+
+        document.getElementById("Placar").innerHTML="Brancas "+white+" X "+black+" Pretas"       
+        if (white === 12 ) {
+            alert("As peças brancas venceram!!");
+        };
+        if (black === 12 ) {
+            alert("As peças pretas venceram!!");
+        };          
         //game.clearActive(); 
     }
 
@@ -155,7 +176,6 @@ if (!document.getElementsByClassName) {
                     nextDamaL = document.getElementById("sq_"+x+"_"+leftUp);
                     
                     if (nextDamaL.hasAttribute("part")) {
-                        console.log("obstaculo");
                         tipo = nextDamaL.getAttribute("type");
                         if (tipo != DamaType) {
                             enemy  = "sq_"+x+"_"+leftUp;
@@ -179,8 +199,6 @@ if (!document.getElementsByClassName) {
             }  
             for (var x = up; x > 0; x--) {
 
-                console.log("linha"+x);
-                //break;
                 // calcula apenas os quadrados brancos
                 w = Math.abs((x+rightUp)%2);
                 // verifica se não é o ultimo quadrado
@@ -190,7 +208,6 @@ if (!document.getElementsByClassName) {
                     nextDamaR = document.getElementById("sq_"+x+"_"+rightUp);
                     
                     if (nextDamaR.hasAttribute("part")) {
-                        console.log("obstaculo");
                         tipo = nextDamaR.getAttribute("type");
                         if (tipo != DamaType) {
                             enemy  = "sq_"+x+"_"+right;
@@ -215,7 +232,6 @@ if (!document.getElementsByClassName) {
             
             // caminha pra baixo em relação ao clicado
             for (var x = dow; x < 9; x++) {
-                console.log("linha"+x);
                 // calcula apenas os quadrados brancos
                 w = Math.abs((x+right)%2);
                 // verifica se não é o ultimo quadrado
@@ -225,7 +241,6 @@ if (!document.getElementsByClassName) {
                     nextDamaR = document.getElementById("sq_"+x+"_"+right);
                     
                     if (nextDamaR.hasAttribute("part")) {
-                        console.log("obstaculo");
                         tipo = nextDamaR.getAttribute("type");
                         if (tipo != DamaType) {
                             enemy  = "sq_"+x+"_"+right;
@@ -251,7 +266,6 @@ if (!document.getElementsByClassName) {
                 // movimenta pra esquerda e pra baixo
                     nextDamaL = document.getElementById("sq_"+x+"_"+left); 
                     if (nextDamaL.hasAttribute("part")) {
-                        console.log("obstaculo");
                         tipoL = nextDamaL.getAttribute("type");
                         if (tipoL != DamaType) {
                             enemy  = "sq_"+x+"_"+left;
@@ -268,7 +282,6 @@ if (!document.getElementsByClassName) {
                         nextDamaL.setAttribute("class",existingClassLeft+" active");
                         nextDamaL.setAttribute("onclick", "game.partMove(this.id,"+oldId+",sq_"+x+"_"+left+",'"+enemy+"','"+type+"')");
                     } 
-                    console.log("Coluna"+right+"w="+w);
                 // se for o ultimo quadrado a esquerda interrompe o loop
                 }else{
                     break;
@@ -301,8 +314,6 @@ if (!document.getElementsByClassName) {
                          
                         existingClassLeft   = nextL.getAttribute("class");
                         if (nextL.hasAttribute("part")) {
-                            console.log("obstaculo");
-                            
                             tipoL = nextL.getAttribute("type");
                             if (tipoL != partType) {
                                 enemy  = "sq_"+x+"_"+mLeft;
@@ -338,7 +349,6 @@ if (!document.getElementsByClassName) {
                          
                         existingClassLeft   = nextR.getAttribute("class");
                         if (nextR.hasAttribute("part")) {
-                            console.log("obstaculo");
                             
                             tipoR = nextR.getAttribute("type");
                             if (tipoR != partType) {
@@ -381,7 +391,6 @@ if (!document.getElementsByClassName) {
                         nextL = document.getElementById("sq_"+x+"_"+mLeft);
                         existingClassLeft   = nextL.getAttribute("class");
                         if (nextL.hasAttribute("part")) {
-                            console.log("obstaculo");
                             
                             tipoL = nextL.getAttribute("type");
                             if (tipoL != partType) {
@@ -421,7 +430,6 @@ if (!document.getElementsByClassName) {
                          
                         existingClassLeft   = nextR.getAttribute("class");
                         if (nextR.hasAttribute("part")) {
-                            console.log("obstaculo");
                             
                             tipoR = nextR.getAttribute("type");
                             if (tipoR != partType) {
@@ -492,7 +500,6 @@ if (!document.getElementsByClassName) {
         
         //executa o movimento
         if (type == "w") {
-            //console.log(row);
             if (row == 1) {
                 
                 move.setAttribute("onclick", "game.possibleMove("+part+","+row+","+sq+",'w',this.id)"); 
@@ -556,7 +563,10 @@ if (!document.getElementsByClassName) {
     game.start = function(){
         game.table();
         game.takePart();
+        document.getElementById("Placar").innerHTML="Brancas "+white+" X "+black+" Pretas"       
     }
     return game.start();
 
 })();
+
+
