@@ -1,0 +1,30 @@
+{
+  "name": "ComunidadeGamesNerd",
+  "version": "1.0.0",
+  "description": "Estudos de desenvolvimento de games",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "homepage": "",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-bower-files": "^0.2.7",
+    "gulp-minify-css": "^1.2.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.1.0",
+    "gulp-uglify": "^1.5.1",
+    "browser-sync": "^2.10.0",
+    "node-bourbon": "^4.2.8",
+    "node-neat": "^1.7.2"
+  },
+  "dependencies": {}
+}
