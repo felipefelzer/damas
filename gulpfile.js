@@ -5,10 +5,10 @@ var rename = require('gulp-rename');
 var browserSync = require('browser-sync');
 var minifycss = require('gulp-minify-css');
 var autoprefixer = require('gulp-autoprefixer');
-var reload = browserSync.reload;
+var mainBowerFiles = require('main-bower-files');
 var bourbon = require("node-bourbon").includePaths;
 var neat = require("node-neat").includePaths;
-var gulpBowerFiles = require('gulp-bower-files');
+var reload = browserSync.reload;
 
 gulp.task('sass', function() {
 	gulp.src('app/scss/style.scss')
@@ -25,7 +25,8 @@ gulp.task('sass', function() {
 });
 
 gulp.task("bower-files", function(){
-    gulpBowerFiles().pipe(gulp.dest("app/scripts/libs/"));
+	return gulp.src(mainBowerFiles(/* options */), { base: 'bower_components' })
+        .pipe(gulp.dest("app/scripts/libs/"))
 });
 
 gulp.task('uglify', function() {
