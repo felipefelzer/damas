@@ -1,14 +1,38 @@
-#game {
-  width: 480px; }
+html {
+  box-sizing: border-box; }
 
-.row {
-  height: 60px;
-  width: 480px; }
+*, *::after, *::before {
+  box-sizing: inherit; }
 
-.square {
-  float: left;
-  height: 60px;
-  width: 60px; }
+#wrapper {
+  max-width: 68em;
+  margin-left: auto;
+  margin-right: auto; }
+  #wrapper::after {
+    clear: both;
+    content: "";
+    display: table; }
+  #wrapper #game #board {
+    width: 30em;
+    margin: 0 auto; }
+    #wrapper #game #board .row {
+      height: 60px;
+      text-align: center; }
+    #wrapper #game #board .square {
+      float: left;
+      height: 60px;
+      width: 60px; }
+  #wrapper #game #Placar {
+    height: 30px;
+    text-align: center; }
+  #wrapper #game #PlacarWhite, #wrapper #game #PlacarBlack {
+    font-size: 28px;
+    height: 35px;
+    background: #434343; }
+  #wrapper #game #PlacarWhite {
+    color: #ccc; }
+  #wrapper #game #PlacarBlack {
+    color: #000; }
 
 .partBlack {
   color: #000000; }
@@ -31,19 +55,4 @@
 
 .active {
   cursor: pointer;
-  background-color: red; }
-
-#Placar {
-  height: 30px;
-  text-align: center; }
-
-#PlacarWhite, #PlacarBlack {
-  font-size: 28px;
-  height: 35px;
-  background: #666; }
-
-#PlacarWhite {
-  color: #ccc; }
-
-#PlacarBlack {
-  color: #000; }
+  background-color: #ff00d5; }
