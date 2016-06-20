@@ -71,7 +71,7 @@ $board-size:sp(480);
 }
 .active{
     cursor:pointer;
-    background-color:adjust-hue(red, -50%);
+    background-color:lighten(blue, 20%);
 } 
 
 
