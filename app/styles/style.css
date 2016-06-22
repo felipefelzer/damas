@@ -16,12 +16,19 @@ html {
     width: 30em;
     margin: 0 auto; }
     #wrapper #game #board .row {
-      height: 60px;
-      text-align: center; }
+      width: 100%;
+      display: table;
+      width: 100%;
+      table-layout: fixed; }
     #wrapper #game #board .square {
-      float: left;
-      height: 60px;
-      width: 60px; }
+      display: table-cell;
+      width: 16.66667%;
+      padding: 10px;
+      height: 60px; }
+      #wrapper #game #board .square.white {
+        background-color: #000000; }
+      #wrapper #game #board .square.black {
+        background-color: #ffffff; }
   #wrapper #game #Placar {
     height: 30px;
     text-align: center; }
@@ -30,29 +37,6 @@ html {
     height: 35px;
     background: #434343; }
   #wrapper #game #PlacarWhite {
-    color: #ccc; }
+    color: #ffffff; }
   #wrapper #game #PlacarBlack {
-    color: #000; }
-
-.partBlack {
-  color: #000000; }
-
-.partWhite {
-  color: #cccccc; }
-
-.black span, .white span {
-  text-align: center;
-  font-size: 46px;
-  cursor: pointer; }
-
-.black {
-  background-color: #000000;
-  color: #FFFFFF; }
-
-.white {
-  background-color: #FFFFFF;
-  color: #000000; }
-
-.active {
-  cursor: pointer;
-  background-color: #6666ff; }
+    color: #ffffff; }

@@ -9,6 +9,8 @@
 // @import "footer";
 
 $border-box-sizing: true !default;
+$white: #000000;
+$black: #ffffff;
 
 @function sp($numero){
     @return $numero/16*1em;
@@ -23,55 +25,58 @@ $board-size:sp(480);
             width: $board-size;
             margin:0 auto;
             .row{
-                height:60px;
-                text-align: center;
+                @include fill-parent();
+                @include row(table);
             }
-
             .square{
-                float:left;
+                @include span-columns(2);
+                @include reset-display;
+                @include pad(10px); 
                 height:60px;
-                width:60px;
+                &.white{
+                    background-color:$white;
+                }
+                &.black{
+                    background-color:$black;
+                }
             }
-
         }
         #Placar{
             height:30px;
             text-align:center;
         }
         #PlacarWhite,#PlacarBlack{
-            
             font-size:28px;
             height:35px;
             background:#434343;
         }  
-        #PlacarWhite{ color:#ccc;}
-        #PlacarBlack{ color:#000;}   
+        #PlacarWhite{ color:$black;}
+        #PlacarBlack{ color:$black;}   
     }
 }
 
-.partBlack{
-    color:#000000;
-}
-.partWhite{
-    color:#cccccc;
-}
-.black span,.white span{
-    text-align:center;
-    font-size:46px;
-    cursor:pointer;
-
-}
-.black{
-    background-color:#000000;
-    color:#FFFFFF;
-}
-.white{
-    background-color:#FFFFFF;
-    color:#000000;
-}
-.active{
-    cursor:pointer;
-    background-color:lighten(blue, 20%);
-} 
+// .partBlack{
+//     color:#000000;
+// }
+// .partWhite{
+//     color:#cccccc;
+// }
+// .black span,.white span{
+//     text-align:center;
+//     font-size:46px;
+//     cursor:pointer;
+// }
+// .black{
+//     background-color:#000000;
+//     color:#FFFFFF;
+// }
+// .white{
+//     background-color:#FFFFFF;
+//     color:#000000;
+// }
+// .active{
+//     cursor:pointer;
+//     background-color:lighten(blue, 20%);
+// } 
 
 
